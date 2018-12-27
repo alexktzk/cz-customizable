@@ -2,8 +2,7 @@
 
 
 var buildCommit = require('./buildCommit');
-var log = require('winston');
-
+var logger = require('./logger');
 
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
@@ -45,11 +44,13 @@ module.exports = {
             scopes = scopes.concat(config.scopes);
           }
           if (config.allowCustomScopes || scopes.length === 0) {
-            scopes = scopes.concat([
+            var empty = [{ name: ' ', value: false }];
+            var custom = [
               new cz.Separator(),
-              { name: 'empty', value: false },
               { name: 'custom', value: 'custom' }
-            ]);
+            ];
+
+            scopes = empty.concat(scopes).concat(custom);
           }
           return scopes;
         },
@@ -111,7 +112,12 @@ module.exports = {
         type: 'input',
         name: 'footer',
         message: messages.footer,
-        when: isNotWip
+        when: function(answers) {
+          if (config.allowIssues !== undefined) {
+            return config.allowIssues && isNotWip(answers);
+          }
+          return isNotWip(answers);
+        }
       },
       {
         type: 'expand',
@@ -122,8 +128,7 @@ module.exports = {
           { key: 'e', name: 'Edit message', value: 'edit' }
         ],
         message: function(answers) {
-          var SEP = '###--------------------------------------------------------###';
-          log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
+          logger.info(buildCommit(answers, config));
           return messages.confirmCommit;
         }
       }

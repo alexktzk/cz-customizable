@@ -5,13 +5,12 @@
 var CZ_CONFIG_NAME = '.cz-config.js';
 var CZ_CONFIG_EXAMPLE_LOCATION = './cz-config-EXAMPLE.js';
 var findConfig = require('find-config');
-var log = require('winston');
 var editor = require('editor');
 var temp = require('temp').track();
 var fs = require('fs');
 var path = require('path');
 var buildCommit = require('./buildCommit');
-
+var logger = require('./logger');
 
 /* istanbul ignore next */
 function readConfigFile() {
@@ -38,7 +37,7 @@ function readConfigFile() {
     }
   }
 
-  log.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
+  logger.warn('Unable to find a configuration file. Please refer to documentation to learn how to ser up: https://github.com/leonardoanalista/cz-customizable#steps "');
 }
 
 module.exports = {
@@ -46,7 +45,7 @@ module.exports = {
     var config = readConfigFile();
     var subjectLimit = config.subjectLimit || 100;
 
-    log.info('\n\nLine 1 will be cropped at ' + subjectLimit + ' characters. All other lines will be wrapped after 100 characters.\n');
+    logger.info('Line 1 will be cropped at ' + subjectLimit + ' characters.\nAll other lines will be wrapped after 100 characters.');
 
     var questions = require('./questions').getQuestions(config, cz);
 
@@ -63,7 +62,7 @@ module.exports = {
                   var commitStr = fs.readFileSync(info.path, { encoding: 'utf8' });
                   commit(commitStr);
                 } else {
-                  log.info('Editor returned non zero value. Commit message was:\n' + buildCommit(answers, config));
+                  logger.info('Editor returned non zero value. Commit message was:\n' + buildCommit(answers, config));
                 }
               });
             });
@@ -72,7 +71,7 @@ module.exports = {
       } else if (answers.confirmCommit === 'yes') {
         commit(buildCommit(answers, config));
       } else {
-        log.info('Commit has been canceled.');
+        logger.info('Commit has been canceled.');
       }
     });
   }
