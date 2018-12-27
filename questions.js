@@ -110,7 +110,12 @@ module.exports = {
         type: 'input',
         name: 'footer',
         message: messages.footer,
-        when: isNotWip
+        when: function(answers) {
+          if (config.allowIssues !== undefined) {
+            return config.allowIssues && isNotWip(answers);
+          }
+          return isNotWip(answers);
+        }
       },
       {
         type: 'expand',
