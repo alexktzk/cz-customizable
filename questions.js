@@ -122,8 +122,7 @@ module.exports = {
           { key: 'e', name: 'Edit message', value: 'edit' }
         ],
         message: function(answers) {
-          var SEP = '###--------------------------------------------------------###';
-          log.info('\n' + SEP + '\n' + buildCommit(answers, config) + '\n' + SEP + '\n');
+          log.info(buildCommit(answers, config));
           return messages.confirmCommit;
         }
       }
