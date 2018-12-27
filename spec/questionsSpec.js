@@ -36,8 +36,8 @@ describe('cz-customizable', function() {
 
     // question 2 - SCOPE
     expect(getQuestion(2).name).toEqual('scope');
-    expect(getQuestion(2).choices({})[0]).toEqual({name: 'myScope'});
-    expect(getQuestion(2).choices({type: 'fix'})[0]).toEqual({name: 'fixOverride'}); //should override scope
+    expect(getQuestion(2).choices({})[1]).toEqual({name: 'myScope'});
+    expect(getQuestion(2).choices({type: 'fix'})[1]).toEqual({name: 'fixOverride'}); //should override scope
     expect(getQuestion(2).when({type: 'fix'})).toEqual(true);
     expect(getQuestion(2).when({type: 'WIP'})).toEqual(false);
     expect(getQuestion(2).when({type: 'wip'})).toEqual(false);

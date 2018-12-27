@@ -44,11 +44,13 @@ module.exports = {
             scopes = scopes.concat(config.scopes);
           }
           if (config.allowCustomScopes || scopes.length === 0) {
-            scopes = scopes.concat([
+            var empty = [{ name: ' ', value: false }];
+            var custom = [
               new cz.Separator(),
-              { name: 'empty', value: false },
               { name: 'custom', value: 'custom' }
-            ]);
+            ];
+
+            scopes = empty.concat(scopes).concat(custom);
           }
           return scopes;
         },
