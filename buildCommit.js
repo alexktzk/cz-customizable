@@ -11,7 +11,7 @@ module.exports = function buildCommit(answers, config) {
   var wrapOptions = {
     trim: true,
     newline: '\n',
-    indent:'',
+    indent: '',
     width: maxLineWidth
   };
 

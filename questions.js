@@ -2,8 +2,7 @@
 
 
 var buildCommit = require('./buildCommit');
-var log = require('winston');
-
+var logger = require('./logger');
 
 var isNotWip = function(answers) {
   return answers.type.toLowerCase() !== 'wip';
@@ -122,7 +121,7 @@ module.exports = {
           { key: 'e', name: 'Edit message', value: 'edit' }
         ],
         message: function(answers) {
-          log.info(buildCommit(answers, config));
+          logger.info(buildCommit(answers, config));
           return messages.confirmCommit;
         }
       }
